@@ -9,47 +9,55 @@ form = """
 <html>
     <head>
         <style>
-            form {
+            form {{
                 background-color: #eee;
                 padding: 20px;
                 margin: 0 auto;
                 width: 540px;
                 font: 16px sans-serif;
                 border-radius: 10px;
-            }
-            textarea {
+            }}
+            textarea {{
                 margin: 10px 0;
                 width: 540px;
                 height: 120px;
-            }
+            }}
         </style>
-
     </head>
     <body>
-    
-        <form action="/web-caesar" method='POST'>
-        <lable for="rot">Rotate by:</lable>
-        <input id="rot" type="text" value "" name="rot" />
-        
-        <lable for="textarea"></lable>
-        <textarea id="textarea" value "0" name="text">
-        </textarea>
 
-        <button type="submit">Submit Query</button>
-        </form>
+      <form action="/" method="post">
+      <label for="rot"><b>Rotate by:</b> 
+        <input type="text" id="rot" name="rot" value = "0"/>
+        
+        <textarea name="text">{0}
+        </textarea>
+        
+        
+        <input type="submit" value="Submit Query"/>
+      </form>
     </body>
 </html>
 """
+
+
+@app.route("/", methods=['POST'])
+def encrypt():
+    rot = request.form['rot']
+
+    try:
+        rot = int(rot)
+    except ValueError:
+        rot = 0
+
+
+    string = request.form['text']
+    encrypted = rotate_string(string, rot)
+    rot = str(rot)
+    return form.format(encrypted)
+
 @app.route("/")
 def index():
-    return form
-
-@app.route("/web-caesar", methods=['POST'])
-def encrypt():
-    text1 = request.form ['text']
-    rotate = request.form ['rot']
-    
-    encrypt1 = rotate_string(rotate, text1)
-    return '<h1>' + encrypt1 + '</h1>'
+    return form.format("")
 
 app.run()
