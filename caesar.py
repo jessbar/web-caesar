@@ -36,5 +36,5 @@ def rotate_string(text, rot):
         else:
             rotated = rotated + char
 
-            return rotated
+    return rotated
 
